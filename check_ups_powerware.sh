@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# snmpwalk -v 1 -c siis_udi -m EATON-EMP-MIB:RFC1213-MIB:UPS-MIB:XUPS-MIB 148.204.110.35 .1.3
+# snmpwalk -v 1 -c public -m EATON-EMP-MIB:RFC1213-MIB:UPS-MIB:XUPS-MIB 148.204.110.35 .1.3
+
 # Powerware MIBs
 POWERWARE=".1.3.6.1.4.1.534.1"
 xupsIdent="$POWERWARE.1"
