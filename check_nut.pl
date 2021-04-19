@@ -101,7 +101,7 @@ $ret = $?;
 
 if($ret == 0)
 {
-  @lines = `$UPSC $opt_d`;
+  @lines = `$UPSC $opt_d 2>/dev/null`;
   $bCharge = 0;
   $bRuntime = 0;
   $bVoltage = 0;
