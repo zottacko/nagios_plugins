@@ -10,9 +10,9 @@ check_pgactivity - PostgreSQL plugin for Nagios
 
 =head1 SYNOPSIS
 
-  check_pgactivity {-w|--warning THRESHOLD} {-c|--critical THRESHOLD} [-s|--service SERVICE ] [-h|--host HOST] [-U|--username ROLE] [-p|--port PORT] [-d|--dbname DATABASE] [-S|--dbservice SERVICE_NAME] [-P|--psql PATH] [--debug] [--status-file FILE] [--path PATH] [-t|--timemout TIMEOUT]
-  check_pgactivity [-l|--list]
-  check_pgactivity [--help]
+  check_pgactivity.pl {-w|--warning THRESHOLD} {-c|--critical THRESHOLD} [-s|--service SERVICE ] [-h|--host HOST] [-U|--username ROLE] [-p|--port PORT] [-d|--dbname DATABASE] [-S|--dbservice SERVICE_NAME] [-P|--psql PATH] [--debug] [--status-file FILE] [--path PATH] [-t|--timemout TIMEOUT]
+  check_pgactivity.pl [-l|--list]
+  check_pgactivity.pl [--help]
 
 =head1 DESCRIPTION
 
@@ -64,8 +64,8 @@ delete $ENV{'LANGUAGE'};
 
 $| = 1;
 
-$VERSION = '2.5';
-$PROGRAM = 'check_pgactivity';
+$VERSION = '2.5.1';
+$PROGRAM = 'check_pgactivity.pl';
 
 my $PG_VERSION_MIN =  70400;
 my $PG_VERSION_74  =  70400;
@@ -9041,23 +9041,23 @@ __END__
 
 =item Execute service "last_vacuum" on host "host=localhost port=5432":
 
-  check_pgactivity -h localhost -p 5432 -s last_vacuum -w 30m -c 1h30m
+  check_pgactivity.pl -h localhost -p 5432 -s last_vacuum -w 30m -c 1h30m
 
 =item Execute service "hot_standby_delta" between hosts "service=pg92" and "service=pg92s":
 
-  check_pgactivity --dbservice pg92,pg92s --service hot_standby_delta -w 32MB -c 160MB
+  check_pgactivity.pl --dbservice pg92,pg92s --service hot_standby_delta -w 32MB -c 160MB
 
 =item Execute service "streaming_delta" on host "service=pg92" to check its slave "stby1" with the IP address "192.168.1.11":
 
-  check_pgactivity --dbservice pg92 --slave "stby1 192.168.1.11" --service streaming_delta -w 32MB -c 160MB
+  check_pgactivity.pl --dbservice pg92 --slave "stby1 192.168.1.11" --service streaming_delta -w 32MB -c 160MB
 
 =item Execute service "hit_ratio" on host "slave" port "5433, excluding database matching the regexps "idelone" and "(?i:sleep)":
 
-  check_pgactivity -p 5433 -h slave --service hit_ratio --dbexclude idelone --dbexclude "(?i:sleep)" -w 90% -c 80%
+  check_pgactivity.pl -p 5433 -h slave --service hit_ratio --dbexclude idelone --dbexclude "(?i:sleep)" -w 90% -c 80%
 
 =item Execute service "hit_ratio" on host "slave" port "5433, only for databases matching the regexp "importantone":
 
-  check_pgactivity -p 5433 -h slave --service hit_ratio --dbinclude importantone -w 90% -c 80%
+  check_pgactivity.pl -p 5433 -h slave --service hit_ratio --dbinclude importantone -w 90% -c 80%
 
 =back
 
