@@ -45,6 +45,10 @@
 # - RHEL7 use "ssacli":
 #     # ln -s /usr/sbin/ssacli /usr/sbin/hpssacli
 #     # and check /etc/sudoers user (example:   nrpe ALL=NOPASSWD: /usr/sbin/hpacucli, /usr/sbin/hpssacli)
+# - Ubuntu 18 use "ssacli":
+#     # ln -s /usr/sbin/ssacli /usr/sbin/hpssacli
+#     # ln -s /usr/sbin/ssacli /usr/sbin/hpacucli
+#     # and check /etc/sudoers user (example:   nrpe ALL=NOPASSWD: /usr/sbin/ssacli
 #
 # !!!!!!!!!!!!!!!!!!!
 #
@@ -185,9 +189,6 @@ COMPAQPROC="/proc/driver/cpqarray/ida"
 hpacucli="/usr/sbin/hpacucli"
 hpssacli="/usr/sbin/hpssacli"
 
-ssacli="/usr/sbin/ssacli"
-hpacucli=$ssacli
-hpssacli=$ssacli
 . $PROGPATH/utils.sh
 
 print_usage() {
