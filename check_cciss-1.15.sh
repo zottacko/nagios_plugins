@@ -48,7 +48,9 @@
 # - Ubuntu 18 use "ssacli":
 #     # ln -s /usr/sbin/ssacli /usr/sbin/hpssacli
 #     # ln -s /usr/sbin/ssacli /usr/sbin/hpacucli
-#     # and check /etc/sudoers user (example:   nrpe ALL=NOPASSWD: /usr/sbin/ssacli
+#     # and check /etc/sudoers user (example:  Defaults:nagios !requiretty 
+#                                              nagios  ALL=(root) NOPASSWD: /usr/sbin/hpacucli, /usr/sbin/hpssacli 
+#                                   )
 #
 # !!!!!!!!!!!!!!!!!!!
 #
