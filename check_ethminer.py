@@ -5,6 +5,21 @@ import socket
 import sys
 import json
 import getopt
+import requests
+
+def trexSummary(command="summary", HOST="localhost", PORT=4067):
+    data=requests.get('http://' + HOST + ':' + str(PORT) + '/summary') 
+    status_detail = ""
+    status_detail = status_detail + " Uptime=" + str(data.json()["uptime"]/60) + "min,"
+    status_detail = status_detail + " Hashrate=" + str(data.json()["hashrate"]/1000) + "KH/s,"
+    status_detail = status_detail + " Pool=" + data.json()["active_pool"]["url"]
+    performance_data = ""
+    performance_data = performance_data + " Hashrate=" + str(data.json()["hashrate_minute"]) + "H/s"
+    performance_data = performance_data + " Accepted=" + str(data.json()["accepted_count"]) + "shares"
+    performance_data = performance_data + " Rejected=" + str(data.json()["rejected_count"]) + "shares"
+    performance_data = performance_data + " Solved=" + str(data.json()["solved_count"]) + "blocks"
+    print("OK:", status_detail, "|", performance_data)
+    return 0
 
 def queryMiner(command="miner_ping", HOST="localhost", PORT=3333):
     command=json.dumps({ "id":0,
@@ -74,7 +89,13 @@ def commandMiner(password, command, params=None, HOST="localhost", PORT=3333):
 def miner(password="", method="miner_ping", params=None, HOST="localhost", PORT=3333):
     result = None
 
-    if (method == "miner_ping") | \
+    if (method == "trex_summary"):
+        if PORT==3333:
+            result = trexSummary("summary", HOST, 4067)
+        else:
+            result = trexSummary("summary", HOST, PORT)
+        return result
+    elif (method == "miner_ping") | \
        (method == "miner_getstatdetail") | \
        (method == "miner_getstat1") | \
        (method == "miner_getconnections") | \
