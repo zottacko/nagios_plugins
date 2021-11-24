@@ -10,8 +10,8 @@ import requests
 def trexSummary(command="summary", HOST="localhost", PORT=4067):
     data=requests.get('http://' + HOST + ':' + str(PORT) + '/summary') 
     status_detail = ""
-    status_detail = status_detail + " Uptime=" + str(round(data.json()["uptime"]/3600), 2) + "h,"
-    status_detail = status_detail + " Hashrate=" + str(round(data.json()["hashrate_hour"]/1000000), 3) + "MH/s,"
+    status_detail = status_detail + " Uptime=" + str(round(data.json()["uptime"]/3600, 2)) + "h,"
+    status_detail = status_detail + " Hashrate=" + str(round(data.json()["hashrate_hour"]/1000000), 3)) + "MH/s,"
     status_detail = status_detail + " Pool=" + data.json()["active_pool"]["url"] + ","
     status_detail = status_detail + " GPUs=" + str(data.json()["gpu_total"])
     performance_data = ""
