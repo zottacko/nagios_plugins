@@ -12,6 +12,8 @@ usage()
   exit 3
 }
 
+gpunumber=0
+gpunumber=$(($gpunumber + 1 ))
 nvidia_smi_log="nvidia_smi_log"
 gpu="${nvidia_smi_log}/gpu"
 fan_speed="${gpu}/fan_speed"
@@ -69,23 +71,23 @@ if [ $checkXmlCreation -ne 0 ]; then
 fi
 
 
-max_power_limit=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $max_power_limit | awk '{print $1}' | awk -F "." '{print $1$2}')
+max_power_limit=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $max_power_limit | awk '{print $1}' | awk -F "." '{print $1$2}' | head -$gpunumber | tail -1)
 power_draw_crit=$(($max_power_limit / 100 ))
-enforced_power_limit=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $enforced_power_limit | awk '{print $1}' | awk -F "." '{print $1$2}')
-default_power_limit=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $default_power_limit | awk '{print $1}' | awk -F "." '{print $1$2}')
+enforced_power_limit=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $enforced_power_limit | awk '{print $1}' | awk -F "." '{print $1$2}' | head -$gpunumber | tail -1)
+default_power_limit=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $default_power_limit | awk '{print $1}' | awk -F "." '{print $1$2}' | head -$gpunumber | tail -1)
 if [[ $enforced_power_limit =~ $isnumber ]]
 then
         power_draw_warn=$(($enforced_power_limit / 100 ))
 else
         power_draw_warn=$(($default_power_limit / 100 ))
 fi
-gpu_temp_max_threshold=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $gpu_temp_max_threshold | awk '{print $1}')
+gpu_temp_max_threshold=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $gpu_temp_max_threshold | awk '{print $1}' | head -$gpunumber | tail -1)
 gpu_temp_crit=$gpu_temp_max_threshold
-gpu_temp_slow_threshold=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $gpu_temp_slow_threshold | awk '{print $1}')
+gpu_temp_slow_threshold=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $gpu_temp_slow_threshold | awk '{print $1}' | head -$gpunumber | tail -1)
 gpu_temp_warn=$gpu_temp_slow_threshold
-gpu_temp_max_mem_threshold=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $gpu_temp_max_mem_threshold | awk '{print $1}')
+gpu_temp_max_mem_threshold=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $gpu_temp_max_mem_threshold | awk '{print $1}' | head -$gpunumber | tail -1)
 memory_temp_crit=$gpu_temp_max_mem_threshold
-gpu_temp_max_mem_threshold=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $gpu_temp_max_mem_threshold | awk '{print $1}')
+gpu_temp_max_mem_threshold=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $gpu_temp_max_mem_threshold | awk '{print $1}' | head -$gpunumber | tail -1)
 memory_temp_warn=$gpu_temp_max_mem_threshold
 gpu_util_crit=100
 gpu_util_warn=80
@@ -110,14 +112,14 @@ eval set -- "$OPTS"
 while :
 do
         case "$1" in
-                -f ) fan_speed=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $fan_speed | awk '{print $1}' ) ; shift ;;
-                -p ) power_draw=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $power_draw | awk '{print $1}' | awk -F "." '{print $1$2}' ) ; shift ;;
-                -g ) gpu_temp=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $gpu_temp | awk '{print $1}' ) ; shift ;;
-                -m ) memory_temp=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $memory_temp | awk '{print $1}' ) ; shift ;;
-                -G ) gpu_util=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $gpu_util | awk '{print $1}' ) ; shift ;;
-                -M ) memory_util=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $memory_util | awk '{print $1}' ) ; shift ;;
-                -E ) encoder_util=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $encoder_util | awk '{print $1}' ) ; shift ;;
-                -D ) decoder_util=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $decoder_util | awk '{print $1}' ) ; shift ;;
+                -f ) fan_speed=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $fan_speed | awk '{print $1}' | head -$gpunumber | tail -1 ) ; shift ;;
+                -p ) power_draw=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $power_draw | awk '{print $1}' | awk -F "." '{print $1$2}' | head -$gpunumber | tail -1 ) ; shift ;;
+                -g ) gpu_temp=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $gpu_temp | awk '{print $1}' | head -$gpunumber | tail -1 ) ; shift ;;
+                -m ) memory_temp=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $memory_temp | awk '{print $1}' | head -$gpunumber | tail -1 ) ; shift ;;
+                -G ) gpu_util=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $gpu_util | awk '{print $1}' | head -$gpunumber | tail -1 ) ; shift ;;
+                -M ) memory_util=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $memory_util | awk '{print $1}' | head -$gpunumber | tail -1 ) ; shift ;;
+                -E ) encoder_util=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $encoder_util | awk '{print $1}' | head -$gpunumber | tail -1 ) ; shift ;;
+                -D ) decoder_util=$(xmlstarlet fo --dropdtd $tmpXml | xmlstarlet sel -t -v $decoder_util | awk '{print $1}' | head -$gpunumber | tail -1 ) ; shift ;;
                 --power_draw_crit ) power_draw_crit="$2"; shift 2 ;;
                 --power_draw_warn ) power_draw_warn="$2"; shift 2 ;;
                 --gpu_temp_crit ) gpu_temp_crit="$2"; shift 2 ;;
@@ -413,4 +415,3 @@ else
         echo "GPU UNKNOWN: $serviceoutput | $perfdata"
 fi
 exit $exit_code
-
